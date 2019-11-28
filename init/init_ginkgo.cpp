@@ -39,9 +39,24 @@
 namespace android {
 namespace init {
 
+void load_properties(const char *model) {
+    property_set("ro.product.name", model);
+    property_set("ro.build.product", model);
+    property_set("ro.product.device", model);
+}
+
 void vendor_load_properties() {
     property_set("ro.bootimage.build.date.utc", "1546335651");
     property_set("ro.build.date.utc", "1546335651");
+    std::string device_region = android::base::GetProperty("ro.boot.hwc", "");
+    if (device_region == "Global_B")
+    {
+        load_properties("willow");
+    }
+    else
+    {
+        load_properties("ginkgo");
+    }
 }
 
 }  // namespace init
